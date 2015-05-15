@@ -38,4 +38,4 @@ BOARD_RECOVERY_SWIPE_SWAPXY := true
 -include vendor/samsung/n5120/BoardConfigVendor.mk
 
 # assert
-TARGET_OTA_ASSERT_DEVICE := konawifi,konaltexx,n5120,GT-N5120,konalte
+TARGET_OTA_ASSERT_DEVICE := GT-N5120,n5120,konalte,konaltexx
