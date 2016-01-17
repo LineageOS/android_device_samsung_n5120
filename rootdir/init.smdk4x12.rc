@@ -2,24 +2,19 @@ import init.smdk4x12.usb.rc
 import init.bt.rc
 
 on init
+
+
+
     chmod 0701 /mnt/media_rw
-    mkdir /mnt/shell/emulated 0700 shell shell
+    chown root root /mnt/media_rw
     mkdir /storage 0550 system sdcard_r
-    mkdir /storage/emulated 0555 root root
     mkdir /storage/sdcard1 0775 system system
     mkdir /storage/usbdisk0 0775 system system
     mkdir /mnt/media_rw/sdcard1 0775 system system
     mkdir /mnt/media_rw/usbdisk0 0775 system system
 
-    export EXTERNAL_STORAGE /storage/emulated/legacy
-    export EMULATED_STORAGE_SOURCE /mnt/shell/emulated
-    export EMULATED_STORAGE_TARGET /storage/emulated
+    export SECONDARY_STORAGE /storage/sdcard1:/storage/usbdisk0
 
-    # for backwards compatibility
-    symlink /storage/emulated/legacy /sdcard
-    symlink /storage/emulated/legacy /mnt/sdcard
-    symlink /storage/emulated/legacy /storage/sdcard0
-    symlink /mnt/shell/emulated/0 /storage/emulated/legacy
     symlink /storage/sdcard1 /extSdCard
     symlink /storage/sdcard1 /mnt/extSdCard
     symlink /storage/usbdisk0 /usbdisk0
@@ -539,9 +534,6 @@ on property:ro.uart_debug=0
 # create virtual SD card at /mnt/sdcard, based on the /data/media directory
 # daemon will drop to user/group system/media_rw after initializing
 # underlying files in /data/media wil be created with user and group media_rw (1023)
-service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
-    class late_start
-
 service fuse_sdcard1 /system/bin/sdcard -u 1023 -g 1023 /mnt/media_rw/sdcard1 /storage/sdcard1
     class late_start
     disabled
