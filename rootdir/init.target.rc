@@ -1,5 +1,3 @@
-import init.smdk4x12.usb.rc
-
 on init
 
     # for modem partition
@@ -22,6 +20,7 @@ on init
     mkdir /tombstones/efs 771 system system
 
 on post-fs-data
+
 # for AT distributor
     chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
     chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
