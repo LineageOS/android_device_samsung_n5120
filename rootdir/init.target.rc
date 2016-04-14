@@ -207,53 +207,53 @@ on property:init.svc.macloader=stopped
     chmod 0660 /data/.rev
 # end of wifi
 
-service qc_kickstart /system/bin/qcks s
+service qc_kickstart /system/bin/logwrapper /system/bin/qcks s
     class core
     user root
     group radio cache inet misc audio sdcard_rw log
 
-service at_distributor /system/bin/at_distributor
+service at_distributor  /system/bin/logwrapper /system/bin/at_distributor
     class late_start
     user root
     group radio misc log
 
 #QCRIL
 # diag app for cp uart
-service diag_uart_log /system/bin/diag_uart_log
+service diag_uart_log /system/bin/logwrapper /system/bin/diag_uart_log
     class main
     user root
     group radio
 
-service netmgrd /system/bin/netmgrd
+service netmgrd  /system/bin/logwrapper /system/bin/netmgrd
     class late_start
 
 #For EncryptionMode - remove disabled, Modify class main
-service qmiproxy /system/bin/qmiproxy
+service qmiproxy  /system/bin/logwrapper /system/bin/qmiproxy
     class main
     user radio
     group radio gps
 
-service qmuxd /system/bin/qmuxd
+service qmuxd  /system/bin/logwrapper /system/bin/qmuxd
     class main
     user root
     group radio log audio bluetooth gps log
 
-service orientationd /system/bin/orientationd
+service orientationd /system/bin/logwrapper /system/bin/orientationd
     class main
     user compass
     group input
 
-service geomagneticd /system/bin/geomagneticd
+service geomagneticd /system/bin/logwrapper /system/bin/geomagneticd
     class main
     user compass
     group system input
 
-service SMD-daemon /system/bin/smdexe
+service SMD-daemon /system/bin/logwrapper  /system/bin/smdexe
     class main
     user root
     group system radio inet net_raw
 
-service DR-daemon /system/bin/ddexe
+service DR-daemon /system/bin/logwrapper  /system/bin/ddexe
     class main
     user root
     group system radio inet net_raw
