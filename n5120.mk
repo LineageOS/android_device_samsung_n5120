@@ -34,6 +34,9 @@ PRODUCT_PROPERTY_OVERRIDES += \
     ro.ril.hsxpa=1 \
     ro.ril.gprsclass=10
 
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/bin/ks-wrapper.sh:/system/bin/ks
+
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.config.qc_lte_network_modes=true
