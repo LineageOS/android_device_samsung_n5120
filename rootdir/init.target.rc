@@ -180,6 +180,11 @@ on post-fs-data
     chmod 2770 /dev/socket/qmux_gps
 
     restorecon_recursive /efs
+    restorecon /system/bin/gpsd
+    restorecon /system/bin/geomagneticd
+    restorecon_recursive /data/system/gps
+    restorecon /data/system/yas.cfg
+    restorecon /data/system/yas-backup.cfg
 
 on boot
 
