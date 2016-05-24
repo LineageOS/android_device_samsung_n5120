@@ -1,11 +1,15 @@
+############################
 on init
+############################
 
-    # for modem partition
-    symlink /dev/block/mmcblk0p10 /dev/mbin0
+    export LD_SHIM_LIBS /system/bin/gpsd|libsamsung_symbols.so:/system/bin/at_distributor|libsamsung_symbols.so:/system/bin/smdexe|libsamsung_symbols.so
 
     # Vibetonz
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 shell shell
+
+    # for modem partition
+    symlink /dev/block/mmcblk0p10 /dev/mbin0
 
     mkdir /firmware 0771 system system
     chown system system /tombstones
@@ -19,19 +23,36 @@ on init
     rmdir /tombstones/efs
     mkdir /tombstones/efs 771 system system
 
+############################
 on post-fs-data
+############################
 
 # for AT distributor
     chown system radio /sys/module/cpuidle_exynos4/parameters/enable_mask
     chmod 0664 /sys/module/cpuidle_exynos4/parameters/enable_mask
 
-    # Waketime for fast dormancy
+# Waketime for fast dormancy
     chown system radio /sys/devices/platform/mdm_hsic_pm0/waketime
     chmod 0660 /sys/devices/platform/mdm_hsic_pm0/waketime
 
 # Allow QMUX daemon to assign port open wait time
     chown radio radio /sys/devices/virtual/hsicctl/hsicctl0/modem_wait
 
+# geomagneticd
+    write /data/system/yas.cfg 0
+    write /data/system/yas-backup.cfg 0
+
+# gpsd
+    mkdir /data/system/gps 775 root root
+    write /data/system/gps/.gpslogd.pipe 0
+    write /data/system/gps/.gpsd.lock 0
+    write /data/system/gps/.gps.interface.pipe.to_gpsd 0
+    write /data/system/gps/.gps.interface.pipe.to_jni 0
+
+# bluetooth
+    write /efs/bluetooth/bt_addr 0
+
+# audio
     mkdir /data/local/audio 0775 media audio
     chown media audio /data/local/audio
 
@@ -112,7 +133,6 @@ on post-fs-data
 # Permissions for gpio_keys
     write /sys/class/sec/sec_key/wakeup_keys 116,172,544
 
-# <Sensors & NFC>
 # Input Events
     chown system input /sys/class/input/input2/delay
     chown system input /sys/class/input/input3/delay
@@ -123,6 +143,7 @@ on post-fs-data
     chown system input /sys/class/input/input7/delay
     chown system input /sys/class/input/input8/delay
     chown system input /sys/class/input/input9/delay
+
 # Magnetic_sensor
     chmod 0777 /dev/i2c-10
     chown system radio /sys/class/sensors/magnetic_sensor/raw_data
@@ -143,6 +164,7 @@ on post-fs-data
     chown system input /sys/class/input/input6/status
     chown system input /sys/class/input/input6/wake
     chown system input /sys/class/input/input6/position
+
 # Magnetic_sensor
     chown compass input /sys/class/input/input5/offsets
     chown compass input /sys/class/input/input5/dynamic_matrix
@@ -179,14 +201,14 @@ on post-fs-data
     mkdir /dev/socket/qmux_gps 0770 gps gps
     chmod 2770 /dev/socket/qmux_gps
 
-    restorecon_recursive /efs
-    restorecon /system/bin/gpsd
-    restorecon /system/bin/geomagneticd
-    restorecon_recursive /data/system/gps
     restorecon /data/system/yas.cfg
     restorecon /data/system/yas-backup.cfg
+    restorecon_recursive /data/system/gps
+    restorecon_recursive /efs
 
+############################
 on boot
+############################
 
     # make param block device link for SysScope
     symlink /dev/block/mmcblk0p7 /dev/block/param
@@ -199,66 +221,83 @@ on boot
     chown system system /sys/class/sec/sec_epen/epen_saving_mode
     chmod 660 /sys/class/sec/sec_epen/epen_saving_mode
 
+on property:init.svc.macloader=stopped
+    chown system root /data/.cid.info
+    chmod 0664 /data/.cid.info
+    chown system root /data/.rev
+    chmod 0660 /data/.rev
+
 # SISO-ANDR_PERF :: START Changing scheduler to cfq and reseting cpu min freq to -1 after boot complete
 on property:sys.boot_completed=1
     write /sys/block/mmcblk0/queue/scheduler cfq
     write /sys/power/cpufreq_min_limit -1
 # SISO-ANDR_PERF :: END
 
-on property:init.svc.macloader=stopped
-    chown system root /data/.cid.info
-    chmod 0664 /data/.cid.info
-    chown system root /data/.rev
-    chmod 0660 /data/.rev
-# end of wifi
+############################
+############################
+
+service at_distributor /system/bin/at_distributor
+    class main
+    user root
+    group system radio inet log cache misc audio net_raw sdcard_rw
+    seclabel u:r:at_distributor:s0
+
+service gpsd /system/bin/gpsd -c /system/etc/gps.xml
+    class main
+    socket gps seqpacket 0775 root root
+    user root
+    group system radio inet log cache misc audio net_raw sdcard_rw
+    ioprio be 0
+    seclabel u:r:gpsd:s0
+
+service cpboot-daemon /sbin/cbd -d -p7
+    class main
+    user root
+    group system radio inet log cache misc audio net_raw sdcard_rw
+    seclabel u:r:cpboot-daemon:s0
+
+service orientationd /system/bin/orientationd
+    class main
+    user root
+    group system radio inet log input cache misc net_raw sdcard_rw
+    seclabel u:r:orientationd:s0
+
+service geomagneticd /system/bin/geomagneticd
+    class main
+    user root
+    group system radio inet log input cache misc net_raw sdcard_rw
+    seclabel u:r:geomagneticd:s0
+
+service SMD-daemon /system/bin/smdexe
+    class main
+    user root
+    group system radio inet log cache misc audio net_raw sdcard_rw
+    seclabel u:r:SMD-daemon:s0
+
+service DR-daemon /system/bin/ddexe
+    class main
+    user root
+    group system radio inet log cache misc audio net_raw sdcard_rw
+    seclabel u:r:DR-daemon:s0
 
 service qc_kickstart /system/bin/qcks s
     class core
     user root
-    group radio cache inet misc audio sdcard_rw log
+    group system radio cache inet misc audio sdcard_rw log
 
-service at_distributor /system/bin/at_distributor
-    class late_start
-    user root
-    group radio misc log
-
-#QCRIL
 # diag app for cp uart
 service diag_uart_log /system/bin/diag_uart_log
     class main
     user root
-    group radio
-
-service netmgrd /system/bin/netmgrd
-    class late_start
+    group system radio
 
 #For EncryptionMode - remove disabled, Modify class main
 service qmiproxy /system/bin/qmiproxy
     class main
     user radio
-    group radio gps
+    group system radio gps
 
 service qmuxd /system/bin/qmuxd
     class main
     user root
-    group radio log audio bluetooth gps log
-
-service orientationd /system/bin/orientationd
-    class main
-    user compass
-    group input
-
-service geomagneticd /system/bin/geomagneticd
-    class main
-    user compass
-    group system input
-
-service SMD-daemon /system/bin/smdexe
-    class main
-    user root
-    group system radio inet net_raw
-
-service DR-daemon /system/bin/ddexe
-    class main
-    user root
-    group system radio inet net_raw
+    group system radio log audio bluetooth gps log
