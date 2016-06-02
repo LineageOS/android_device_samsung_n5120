@@ -2,6 +2,8 @@
 on init
 ############################
 
+    export LD_SHIM_LIBS /system/bin/at_distributor|libsamsung_symbols.so:/system/bin/smdexe|libsamsung_symbols.so
+
     # Vibetonz
     export VIBE_PIPE_PATH /dev/pipes
     mkdir /dev/pipes 0771 shell shell
@@ -278,6 +280,12 @@ service DR-daemon /system/bin/ddexe
     user root
     group system radio inet log cache misc audio net_raw sdcard_rw
     seclabel u:r:DR-daemon:s0
+
+# diag app for cp uart
+service diag_uart_log /system/bin/diag_uart_log
+    class main
+    user root
+    group system radio
 
 service qc_kickstart /system/bin/qcks s
     class core
