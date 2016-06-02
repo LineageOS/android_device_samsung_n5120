@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2012 The CyanogenMod Project
+# Copyright (C) 2016 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ LOCAL_PATH := device/samsung/n5120
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
 TARGET_KERNEL_CONFIG := cyanogenmod_n5120_defconfig
 
-# RIL
-COMMON_GLOBAL_CFLAGS += -DPROPERTY_PERMS_APPEND='{ "ril.ks.status", AID_SYSTEM, 0 },'
+# KK 4412 QCOM KS WORKAROUND
+COMMON_GLOBAL_CFLAGS += -DKK_QCOM_4412_RIL
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/samsung/n5120/rootdir/fstab.smdk4x12
