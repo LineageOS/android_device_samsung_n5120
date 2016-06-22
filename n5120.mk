@@ -16,8 +16,6 @@
 
 LOCAL_PATH := device/samsung/n5120
 
-TARGET_VOICE_TECH := gsm
-
 DEVICE_PACKAGE_OVERLAYS += $(LOCAL_PATH)/overlay
 
 # Init files
@@ -29,12 +27,7 @@ PRODUCT_COPY_FILES += \
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
-    mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1 \
-    ro.ril.hsxpa=1 \
-    ro.ril.gprsclass=10
-
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.config.qc_lte_network_modes=true
+    mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
@@ -42,6 +35,11 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.software.sip.voip.xml:system/etc/permissions/android.software.sip.voip.xml \
     frameworks/native/data/etc/android.software.sip.xml:system/etc/permissions/android.software.sip.xml \
     frameworks/native/data/etc/tablet_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml
+
+# These are the hardware-specific features
+PRODUCT_COPY_FILES += \
+    frameworks/native/data/etc/handheld_core_hardware.xml:system/etc/permissions/handheld_core_hardware.xml \
+    frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
 
 # Include common makefile
 $(call inherit-product, vendor/samsung/n5120/n5120-vendor.mk)
