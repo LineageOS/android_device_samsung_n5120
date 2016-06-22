@@ -17,5 +17,6 @@ PRODUCT_MANUFACTURER := samsung
 # Set build fingerprint / ID / Product Name ect.
 PRODUCT_BUILD_PROP_OVERRIDES += \
 	PRODUCT_NAME=GT-N5120 \
-	TARGET_DEVICE=GT-N5120 BUILD_FINGERPRINT="samsung/konaltexx/konalte:4.4.2/KOT49H/N5120XXDOD1:user/release-keys" \
+	TARGET_DEVICE=GT-N5120 \
+	BUILD_FINGERPRINT="samsung/konaltexx/konalte:4.4.2/KOT49H/N5120XXDOD1:user/release-keys" \
 	PRIVATE_BUILD_DESC="konaltexx-user 4.4.2 KOT49H N5120XXDOD1 release-keys"

@@ -25,8 +25,8 @@ LOCAL_PATH := device/samsung/n5120
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
 TARGET_KERNEL_CONFIG := cyanogenmod_n5120_defconfig
 
-# KK 4412 QCOM KS WORKAROUND
-COMMON_GLOBAL_CFLAGS += -DKK_QCOM_4412_RIL
+# GPS
+BOARD_GPS_SET_PRIVACY := true
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/samsung/n5120/rootdir/fstab.smdk4x12

@@ -77,7 +77,4 @@
         <item>7</item>
         <item>9</item>
     </integer-array>
-	
-	<!-- Boolean to enable stk functionality on Samsung phones -->
-    <bool name="config_samsung_stk">true</bool>
 </resources>
