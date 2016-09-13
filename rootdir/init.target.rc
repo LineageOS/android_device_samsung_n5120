@@ -1,19 +1,10 @@
 ##############################################################################################################
 
-on early-init
-
-##############################################################################################################
-
-    mkdir /efs 0771 radio system
-    mkdir /tombstones
-
-##############################################################################################################
-
 on init
 
 ##############################################################################################################
 
-    export LD_SHIM_LIBS /system/bin/at_distributor|libsamsung_symbols.so:/system/lib/libril.so|libsamsung_symbols.so
+    export LD_SHIM_LIBS /system/lib/libril.so|libsamsung_symbols.so
 
     mkdir /efs 0771 radio system
 
@@ -95,6 +86,32 @@ on fs
     chown system system /sys/class/backlight/panel/brightness
     chown system system /sys/class/backlight/panel/auto_brightness
     chown system system /sys/class/sec/sec_touchkey/brightness
+
+#permission for touchkey	
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_brightness
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_menu
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_back
+    chown system radio /sys/class/sec/sec_touchkey/touch_version
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_version_panel
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_version_phone
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update_status
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_firm_update
+    chown system radio /sys/class/sec/sec_touchkey/touch_sensitivity
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_threshold
+    chown system system /sys/devices/virtual/sec/sec_touchkey/brightness
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn1
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn3
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_dummy_btn5
+    chown system radio /sys/class/sec/sec_touchkey/extra_button_event
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_button_all
+    chown system radio /sys/class/sec/sec_touchkey/touchkey_threshold
+    chmod 0660 /sys/class/sec/sec_touchkey/extra_button_event
+
+# KeyDisabler
+    chown system system /sys/class/sec/sec_touchkey/keypad_enable
+
+# Permissions for touch
+    chown system radio /sys/class/sec/tsp/cmd
 
 # Permissions for LCD
     chown system radio /sys/class/lcd/panel/lcd_type
@@ -245,6 +262,10 @@ on post-fs-data
     chmod 2777 /dev/socket/qmux_audio
     mkdir /dev/socket/qmux_gps 0777 gps gps
     chmod 2777 /dev/socket/qmux_gps
+
+    chmod 660 /dev/socket/qmux_gps/qmux_client_socket
+    chmod 660 /dev/socket/qmux_gps/qmux_connect_socket
+
 	
     # Allow QMUX daemon to assign port open wait time
     chown radio radio /sys/devices/virtual/hsicctl/hsicctl0/modem_wait
@@ -449,18 +470,6 @@ on property:init.svc.macloader=stopped
 ##############################################################################################################
 ##############################################################################################################
 
-service at_distributor /system/bin/at_distributor
-    class late_start
-    user root
-    group radio log
-    seclabel u:r:at_distributor:s0
-
-service diag_uart_log /system/bin/diag_uart_log
-    class main
-    user root
-    group radio
-    seclabel u:r:diag_uart_log:s0
-
 service orientationd /system/bin/orientationd
     class main
     user compass
@@ -472,12 +481,6 @@ service geomagneticd /system/bin/geomagneticd
     user compass
     group system input
     seclabel u:r:geomagneticd:s0
-
-service SMD-daemon /system/bin/smdexe
-    class main
-    user root
-    group system radio inet net_raw
-    seclabel u:r:SMD-daemon:s0
 
 service qc_kickstart /system/bin/qcks s
     class core
