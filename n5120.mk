@@ -38,6 +38,6 @@ PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.sensor.barometer.xml:system/etc/permissions/android.hardware.sensor.barometer.xml
 
 # Include common makefile
-$(call inherit-product, vendor/samsung/n5120/n5120-vendor.mk)
-$(call inherit-product, device/samsung/smdk4412-qcom-common/common.mk)
 $(call inherit-product, device/samsung/kona-common/kona-common.mk)
+$(call inherit-product, device/samsung/smdk4412-qcom-common/common.mk)
+$(call inherit-product, vendor/samsung/n5120/n5120-vendor.mk)
