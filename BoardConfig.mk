@@ -14,8 +14,6 @@
 # limitations under the License.
 #
 
-# This variable is set first, so it can be overridden
-# by BoardConfigVendor.mk
 -include device/samsung/kona-common/BoardConfigCommon.mk
 -include device/samsung/smdk4412-qcom-common/BoardCommonConfig.mk
 
@@ -33,9 +31,6 @@ TARGET_RECOVERY_FSTAB := device/samsung/n5120/rootdir/fstab.smdk4x12
 RECOVERY_FSTAB_VERSION := 2
 BOARD_RECOVERY_SWIPE := true
 BOARD_RECOVERY_SWIPE_SWAPXY := true
-
-# inherit from the proprietary version
--include vendor/samsung/n5120/BoardConfigVendor.mk
 
 # assert
 TARGET_OTA_ASSERT_DEVICE := GT-N5120,n5120,konalte,konaltexx
