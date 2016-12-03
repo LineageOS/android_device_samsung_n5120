@@ -23,6 +23,9 @@ LOCAL_PATH := device/samsung/n5120
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
 TARGET_KERNEL_CONFIG := cyanogenmod_n5120_defconfig
 
+# RIL
+TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
+
 # GPS
 BOARD_GPS_SET_PRIVACY := true
 
