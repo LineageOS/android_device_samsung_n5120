@@ -34,6 +34,10 @@ RECOVERY_FSTAB_VERSION := 2
 BOARD_RECOVERY_SWIPE := true
 BOARD_RECOVERY_SWIPE_SWAPXY := true
 
+# RIL
+BOARD_PROVIDES_LIBRIL := true
+BOARD_MODEM_TYPE := mdm9x35
+
 # inherit from the proprietary version
 -include vendor/samsung/n5120/BoardConfigVendor.mk
 
