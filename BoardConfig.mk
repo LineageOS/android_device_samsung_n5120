@@ -37,6 +37,7 @@ BOARD_RECOVERY_SWIPE_SWAPXY := true
 # RIL
 BOARD_PROVIDES_LIBRIL := true
 BOARD_MODEM_TYPE := mdm9x35
+TARGET_SPECIFIC_HEADER_PATH += $(LOCAL_PATH)/include
 
 # inherit from the proprietary version
 -include vendor/samsung/n5120/BoardConfigVendor.mk
