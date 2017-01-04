@@ -23,7 +23,7 @@ LOCAL_PATH := device/samsung/n5120
 
 # Inline kernel building
 TARGET_KERNEL_SOURCE := kernel/samsung/smdk4412
-TARGET_KERNEL_CONFIG := cyanogenmod_n5120_defconfig
+TARGET_KERNEL_CONFIG := lineageos_n5120_defconfig
 
 # GPS
 BOARD_GPS_SET_PRIVACY := true
