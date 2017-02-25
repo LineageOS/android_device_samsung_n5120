@@ -24,9 +24,8 @@ PRODUCT_COPY_FILES += \
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
-    ro.telephony.default_network=9 \
-    telephony.lteOnGsmDevice=1 \
-    ro.ril.telephony.mqanelements=6
+    mobiledata.interfaces=pdp0,gprs,ppp0,rmnet0,rmnet1 \
+    ro.telephony.ril_class=smdk4x12QComRIL
 
 # These are the hardware-specific features
 PRODUCT_COPY_FILES += \
