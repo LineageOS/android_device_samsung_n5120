@@ -47,3 +47,6 @@ BOARD_RIL_CLASS := ../../../device/samsung/n5120/ril
 
 # assert
 TARGET_OTA_ASSERT_DEVICE := GT-N5120,n5120,konalte,konaltexx
+
+# Selinux
+BOARD_SEPOLICY_DIRS += device/samsung/n5120/selinux
